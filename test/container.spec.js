@@ -13,6 +13,38 @@ describe('container', () => {
       const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
 
       wrapper.find(Dummy).should.have.prop('renderWeeks').that.is.an('array').and.has.length(5)
+      const weeks = wrapper.find(Dummy).prop('renderWeeks')
+      for(let w of weeks) {
+        for(let d of w) {
+          d.events.should.eql([])
+        }
+      }
+    })
+
+    it('should not include events out of range', () => {
+      const Element = calcWeeks(props => <Dummy {...props} />)
+      const events = [{start: '2016-01-05', end: '2016-01-20', id: '123', title: 'Some Event'}]
+      const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
+      const weeks = wrapper.find(Dummy).prop('renderWeeks')
+      for(let w of weeks) {
+        for(let d of w) {
+          d.events.should.eql([])
+        }
+      }
+    })
+
+    it('should pass events grouped by week', () => {
+      const Element = calcWeeks(props => <Dummy {...props} />)
+      const events = [{start: '2016-02-20', end: '2016-04-20', id: '123', title: 'Some Event'}]
+      const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2015-12-28'/>)
+
+      const weeks = wrapper.find(Dummy).prop('renderWeeks')
+      // not before
+      weeks[2][4].events.should.have.length(0)
+      // included on the day we start (7th week, on Saturday)
+      weeks[2][5].events.should.have.length(1)
+      // and repeat on following weeks
+      weeks[3][0].events.should.have.length(1)
     })
   })
 

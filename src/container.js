@@ -58,7 +58,9 @@ export const eventBuffer = compose(
 
 export const calcWeeks = withProps(({events, renderRange, min}) => ({
   renderWeeks: groupByWeek(layoutCalendarEvents(prepareCalendarDays(
-    events, min, 7 * (renderRange.stop - renderRange.start))))
+    events,
+    moment(min).add(renderRange.start, 'week'),
+    7 * (renderRange.stop - renderRange.start))))
 }))
 
 export default compose(
