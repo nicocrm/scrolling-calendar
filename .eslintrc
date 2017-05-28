@@ -1,3 +1,7 @@
 {
-  "extends": "f1-react"
+  "extends": "f1-react",
+  "rules": {
+    "no-trailing-spaces": "off",
+    "eol-last": "off"
+  }
 }
