@@ -32,4 +32,5 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-lib/
+# built files (they are used for npm publish but not published to git)
+build/
