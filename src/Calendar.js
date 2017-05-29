@@ -55,16 +55,19 @@ class Calendar extends React.Component {
 
   render() {
     const estimatedSize = 194
-    return <VirtualList ref={this.initRef}
-                        height={600}
-                        width="100%"
-                        renderItem={this.renderWeek}
-                        itemCount={this.props.totalWeekCount}
-                        scrollOffset={this.props.initialWeekIndex * estimatedSize}
-                        itemSize={this.getWeekSize}
-                        estimatedItemSize={estimatedSize}
-                        overscanCount={OVERSCAN}
-                        onScroll={this.onScroll}/>
+    return <div className='week-cal'>
+      <Header month={weekToDate(this.props.min, this.props.renderRange.start + this.props.visibleWeekCount / 2)} />
+      <VirtualList ref={this.initRef}
+                   height={600}
+                   width="100%"
+                   renderItem={this.renderWeek}
+                   itemCount={this.props.totalWeekCount}
+                   scrollOffset={this.props.initialWeekIndex * estimatedSize}
+                   itemSize={this.getWeekSize}
+                   estimatedItemSize={estimatedSize}
+                   overscanCount={OVERSCAN}
+                   onScroll={this.onScroll}/>
+    </div>
   }
 }
 
