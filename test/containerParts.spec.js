@@ -14,8 +14,8 @@ describe('containerParts', () => {
 
       wrapper.find(Dummy).should.have.prop('renderWeeks').that.is.an('array').and.has.length(5)
       const weeks = wrapper.find(Dummy).prop('renderWeeks')
-      for(let w of weeks) {
-        for(let d of w) {
+      for (let w of weeks) {
+        for (let d of w) {
           d.events.should.eql([])
         }
       }
@@ -26,8 +26,8 @@ describe('containerParts', () => {
       const events = [{start: '2016-01-05', end: '2016-01-20', id: '123', title: 'Some Event'}]
       const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
       const weeks = wrapper.find(Dummy).prop('renderWeeks')
-      for(let w of weeks) {
-        for(let d of w) {
+      for (let w of weeks) {
+        for (let d of w) {
           d.events.should.eql([])
         }
       }
@@ -85,6 +85,20 @@ describe('containerParts', () => {
   })
 
   describe('eventBuffer', () => {
+    it('should default bufferRange to wrap render range', () => {
+      const Element = eventBuffer(props => <Dummy {...props} />)
+      const setRenderRangeProp = sinon.spy()
+      const onLoadEventsProp = sinon.spy()
+      const wrapper = mount(<Element
+        onLoadEvents={onLoadEventsProp}
+        min='2016-01-01'
+        setRenderRange={setRenderRangeProp} renderRange={{start: 40, stop: 46}}/>)
+      expect(wrapper.find(Dummy)).to.have.prop('bufferRange')
+      const bufferRange = wrapper.find(Dummy).prop('bufferRange')
+      expect(bufferRange).to.have.property('start').lessThan(40)
+      expect(bufferRange).to.have.property('stop').greaterThan(46)
+    })
+
     it('should update renderRange and call onLoadEvents when range is modified by a lot', () => {
       const Element = eventBuffer(props => <Dummy {...props} />)
       const setRenderRangeProp = sinon.spy()
@@ -107,20 +121,29 @@ describe('containerParts', () => {
       const onLoadEventsProp = sinon.spy()
       const wrapper = mount(<Element
         onLoadEvents={onLoadEventsProp}
+        min='2016-01-01'
         setRenderRange={setRenderRangeProp} renderRange={{start: 40, stop: 46}}/>)
       const setRenderRange = wrapper.find(Dummy).prop('setRenderRange')
-      // first scroll, we are going to have a reset of the range, because we default to just the render range
-      setRenderRange({start: 42, stop: 48})
       setRenderRangeProp.reset()
       onLoadEventsProp.reset()
-      setRenderRange({start: 44, stop: 50})
-      setRenderRangeProp.should.have.been.calledWith({start: 44, stop: 50})
+      setRenderRange({start: 42, stop: 48})
+      setRenderRangeProp.should.have.been.calledWith({start: 42, stop: 48})
       // noinspection BadExpressionStatementJS
       onLoadEventsProp.should.not.have.been.called
     })
 
     it('should call onLoadEvent during initial mount', () => {
-
+      const Element = eventBuffer(props => <Dummy {...props} />)
+      const setRenderRangeProp = sinon.spy()
+      const onLoadEventsProp = sinon.spy()
+      mount(<Element
+        onLoadEvents={onLoadEventsProp}
+        min='2016-01-01'
+        setRenderRange={setRenderRangeProp} renderRange={{start: 40, stop: 46}}/>)
+      // noinspection BadExpressionStatementJS
+      onLoadEventsProp.should.have.been.called
+      // noinspection BadExpressionStatementJS
+      setRenderRangeProp.should.not.have.been.called
     })
   })
   //
