@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import VirtualList from 'react-tiny-virtual-list'
-import WeekRow from './components/WeekRow'
 import {OVERSCAN} from './constants'
+import WeekRow from './components/WeekRow'
+import weekToDate from './lib/weekToDate'
 
-class WeekCal extends React.Component {
+class Calendar extends React.Component {
   // noinspection JSUnusedGlobalSymbols
   static propTypes = {
     // used to update the {start, stop} index that are shown
@@ -13,7 +14,10 @@ class WeekCal extends React.Component {
     // update renderStartIndex and renderWeeks
     setRenderRange: PropTypes.func.isRequired,
     // the index of the first week to be rendered
-    renderStartIndex: PropTypes.number.isRequired,
+    renderRange: PropTypes.shape({
+      start: PropTypes.number.isRequired,
+      stop: PropTypes.number.isRequired
+    }).isRequired,
     // the weeks (array of days) that are rendered
     renderWeeks: PropTypes.array.isRequired,
     // how many weeks to actually paint on the screen
@@ -21,7 +25,8 @@ class WeekCal extends React.Component {
     // total # of weeks
     totalWeekCount: PropTypes.number.isRequired,
     // the week to initially scroll to
-    initialWeekIndex: PropTypes.number.isRequired
+    initialWeekIndex: PropTypes.number.isRequired,
+    min: PropTypes.object.isRequired
   }
 
   initRef = (ref) => {
@@ -32,19 +37,21 @@ class WeekCal extends React.Component {
     const {start, stop} = this.listRef.sizeAndPositionManager.getVisibleRange({
       offset,
       containerSize: 600,
-      overscanCount: 10
+      overscanCount: OVERSCAN
     })
     this.props.setRenderRange({start, stop})
   }
 
+  // what is the height of the week row?
   getWeekSize = (index) => {
     return 194
   }
 
-  renderWeek = ({index, style}) => {
-    const week = this.props.renderWeeks[index - this.props.renderStartIndex]
-    return <WeekRow week={week} style={style}/>
-  }
+  renderWeek = ({index, style}) =>
+    <WeekRow key={index}
+             week={this.props.renderWeeks[index - this.props.renderRange.start]}
+             startOfWeek={weekToDate(this.props.min, index)}
+             style={style}/>
 
   render() {
     const estimatedSize = 194
@@ -61,4 +68,4 @@ class WeekCal extends React.Component {
   }
 }
 
-export default WeekCal
+export default Calendar

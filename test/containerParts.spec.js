@@ -1,8 +1,8 @@
 import React from 'react'
-import {initialWeek, renderRange, eventBuffer, calcWeeks} from '../src/container'
+import {initialWeek, renderRange, eventBuffer, calcWeeks} from '../src/containerParts'
 import {mount} from 'enzyme'
 
-describe('container', () => {
+describe('containerParts', () => {
   // tests for the individual parts of the container
   const Dummy = () => <div className='dummy'/>
 
@@ -117,6 +117,10 @@ describe('container', () => {
       setRenderRangeProp.should.have.been.calledWith({start: 44, stop: 50})
       // noinspection BadExpressionStatementJS
       onLoadEventsProp.should.not.have.been.called
+    })
+
+    it('should call onLoadEvent during initial mount', () => {
+
     })
   })
   //
