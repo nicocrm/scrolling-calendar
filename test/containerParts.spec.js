@@ -1,6 +1,7 @@
 import React from 'react'
-import {initialWeek, renderRange, eventBuffer, calcWeeks} from '../src/containerParts'
+import {initialWeek, renderRange, eventBuffer, calcWeeks, getCurrentMonth, calcUpdatedFlag} from '../src/containerParts'
 import {mount} from 'enzyme'
+import moment from 'moment'
 
 describe('containerParts', () => {
   // tests for the individual parts of the container
@@ -12,7 +13,7 @@ describe('containerParts', () => {
       const events = []
       const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
 
-      wrapper.find(Dummy).should.have.prop('renderWeeks').that.is.an('array').and.has.length(5)
+      wrapper.find(Dummy).should.have.prop('renderWeeks').that.is.an('array').and.has.length(6)
       const weeks = wrapper.find(Dummy).prop('renderWeeks')
       for (let w of weeks) {
         for (let d of w) {
@@ -82,6 +83,12 @@ describe('containerParts', () => {
       wrapper.find(Dummy).should.have.prop('min')
       wrapper.find(Dummy).prop('min').format('YYYY-MM-DD').should.eql('2015-12-28')
     })
+
+    it('converts today to a moment object', () => {
+      const Element = initialWeek(props => <Dummy {...props} />)
+      const wrapper = mount(<Element today={'2016-05-20'}/>)
+      wrapper.find(Dummy).should.have.prop('today').that.is.instanceof(moment)
+    })
   })
 
   describe('eventBuffer', () => {
@@ -146,9 +153,34 @@ describe('containerParts', () => {
       setRenderRangeProp.should.not.have.been.called
     })
   })
-  //
-  //
-  // it('should pass totalWeekCount and initialWeekIndex', () => {
-  //
-  // })
+
+  describe('getCurrentMonth', () => {
+    it('calculates current month as function of min and render range - start of month', () => {
+      const Element = getCurrentMonth(props => <Dummy {...props} />)
+      const wrapper = mount(<Element renderRange={{start: 5, stop: 20}} min={moment('2016-01-01')}/>)
+      wrapper.find(Dummy).should.have.prop('currentMonth').that.is.instanceof(moment)
+      // 5 + overscan = 9th week
+      wrapper.find(Dummy).prop('currentMonth').format('MMM').should.equal('Mar')
+    })
+
+    it('calculates current month as function of min and render range - middle of month', () => {
+      const Element = getCurrentMonth(props => <Dummy {...props} />)
+      const wrapper = mount(<Element renderRange={{start: 8, stop: 20}} min={moment('2016-01-01')}/>)
+      wrapper.find(Dummy).should.have.prop('currentMonth').that.is.instanceof(moment)
+      // 8 + 4 = 12, last week of March
+      wrapper.find(Dummy).prop('currentMonth').format('MMM').should.equal('Mar')
+    })
+  })
+
+  describe('calcUpdatedFlag', () => {
+    it('computes updatedFlag based on events', () => {
+      const Element = calcUpdatedFlag(props => <Dummy {...props} />)
+      const wrapper = mount(<Element events={[]} />)
+      // noinspection BadExpressionStatementJS
+      wrapper.find(Dummy).should.have.prop('updatedFlag').that.is.not.ok
+      wrapper.setProps({events: [{id: '123'}]})
+      // noinspection BadExpressionStatementJS
+      wrapper.find(Dummy).should.have.prop('updatedFlag').that.is.ok
+    })
+  })
 })

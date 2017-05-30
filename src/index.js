@@ -5,10 +5,9 @@ import compose from 'recompose/compose'
 import PropTypes from 'prop-types'
 import Calendar from './Calendar'
 import moment from 'moment'
-import {initialWeek, renderRange, eventBuffer, calcWeeks} from './containerParts'
-
-// pass as string, javascript date objects, or moment objects
-const datePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+import {initialWeek, renderRange, eventBuffer, calcWeeks, getCurrentMonth, calcUpdatedFlag} from './containerParts'
+import datePropType from './proptypes/datePropType'
+import eventShape from './proptypes/eventShape'
 
 export default compose(
   setDisplayName('WeekCal'),
@@ -18,21 +17,25 @@ export default compose(
     max: datePropType,
     // where to start the calendar at
     initialDate: datePropType,
+    visibleWeekCount: PropTypes.number,
     // function({start: string, end: string}) used to provide new events data
     onLoadEvents: PropTypes.func.isRequired,
     events: PropTypes.arrayOf(
-      PropTypes.shape({
-        start: datePropType,
-        end: datePropType,
-        id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired
-      })
+      eventShape
     ).isRequired,
+    // today's date - defaults to today (duh) but can be changed to another day to simulate a different
+    // day's calendar
+    today: datePropType,
+    onEventClick: PropTypes.func,
+    // optional component creator used to render the inside of an event
+    eventRenderer: PropTypes.func,
   }),
   defaultProps({
     min: moment().add(-5, 'year'),
     max: moment().add(10, 'year'),
-    initialDate: moment().startOf('isoWeek')
+    initialDate: moment().startOf('isoWeek'),
+    visibleWeekCount: 4,
+    today: moment()
   }),
-  initialWeek, renderRange, eventBuffer, calcWeeks
+  initialWeek, renderRange, eventBuffer, calcWeeks, getCurrentMonth, calcUpdatedFlag
 )(Calendar)

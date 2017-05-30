@@ -11,10 +11,12 @@ import layoutCalendarEvents from './lib/layoutCalendarEvents'
 import groupByWeek from './lib/groupByWeek'
 
 // calculation of initial props
-export const initialWeek = withProps(({min, max, initialDate}) => ({
+// also converts some incoming date props to moment
+export const initialWeek = withProps(({min, max, initialDate, today}) => ({
   totalWeekCount: moment(max).diff(min, 'week'),
   initialWeekIndex: moment(initialDate).diff(min, 'week'),
-  min: moment(min).startOf('isoWeek')
+  min: moment(min).startOf('isoWeek'),
+  today: moment(today)
 }))
 
 // renderRange state and initial calculation
@@ -56,5 +58,14 @@ export const calcWeeks = withProps(({events, renderRange, min}) => ({
   renderWeeks: groupByWeek(layoutCalendarEvents(prepareCalendarDays(
     events,
     moment(min).add(renderRange.start, 'week'),
-    7 * (renderRange.stop - renderRange.start))))
+    // note stop is inclusive
+    7 * (renderRange.stop + 1 - renderRange.start))))
+}))
+
+export const getCurrentMonth = withProps(({renderRange: {start}, min}) => ({
+  currentMonth: weekToDate(min, start + OVERSCAN, true)
+}))
+
+export const calcUpdatedFlag = withProps(({events}) => ({
+  updatedFlag: events.length && `${events[0].id}-${events.length}-${events[events.length - 1].id}`
 }))

@@ -4,6 +4,8 @@ import VirtualList from 'react-tiny-virtual-list'
 import {OVERSCAN} from './constants'
 import WeekRow from './components/WeekRow'
 import weekToDate from './lib/weekToDate'
+import Header from './components/Header'
+import moment from 'moment'
 
 class Calendar extends React.Component {
   // noinspection JSUnusedGlobalSymbols
@@ -21,12 +23,18 @@ class Calendar extends React.Component {
     // the weeks (array of days) that are rendered
     renderWeeks: PropTypes.array.isRequired,
     // how many weeks to actually paint on the screen
-    visibleWeekCount: PropTypes.number,
+    visibleWeekCount: PropTypes.number.isRequired,
     // total # of weeks
     totalWeekCount: PropTypes.number.isRequired,
     // the week to initially scroll to
     initialWeekIndex: PropTypes.number.isRequired,
-    min: PropTypes.object.isRequired
+    min: PropTypes.object.isRequired,
+    today: PropTypes.instanceOf(moment).isRequired,
+    currentMonth: PropTypes.instanceOf(moment).isRequired,
+    eventRenderer: PropTypes.func,
+    onEventClick: PropTypes.func,
+    // a flag used to signify we need to re-render the list
+    updatedFlag: PropTypes.any
   }
 
   initRef = (ref) => {
@@ -43,12 +51,13 @@ class Calendar extends React.Component {
   }
 
   // what is the height of the week row?
+  // this should be calculated according to the events
   getWeekSize = (index) => {
     return 194
   }
 
   renderWeek = ({index, style}) =>
-    <WeekRow key={index}
+    <WeekRow key={index} today={this.props.today} currentMonth={this.props.currentMonth}
              week={this.props.renderWeeks[index - this.props.renderRange.start]}
              startOfWeek={weekToDate(this.props.min, index)}
              style={style}/>
@@ -56,10 +65,11 @@ class Calendar extends React.Component {
   render() {
     const estimatedSize = 194
     return <div className='week-cal'>
-      <Header month={weekToDate(this.props.min, this.props.renderRange.start + this.props.visibleWeekCount / 2)} />
+      <Header month={this.props.currentMonth}/>
       <VirtualList ref={this.initRef}
                    height={600}
                    width="100%"
+                   data-updated={this.props.updatedFlag}
                    renderItem={this.renderWeek}
                    itemCount={this.props.totalWeekCount}
                    scrollOffset={this.props.initialWeekIndex * estimatedSize}

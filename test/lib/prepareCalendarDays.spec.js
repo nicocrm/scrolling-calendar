@@ -28,6 +28,27 @@ describe('projects:prepareCalendarDays', () => {
     ])
   })
 
+  it('should not take time into account when adding event', () => {
+    const proj = {
+      start: '2016-01-03T23:00:00',
+      end: '2016-01-04T12:00:00',
+      title: 'Test Project',
+      stage: 'closed',
+      id: '123',
+      expanded: false
+    }
+    const data = prepareCalendarDays([proj], '2016-01-04', 10)
+    expect(data[0].events).to.containSubset([
+      {
+        title: 'Test Project',
+        stage: 'closed',
+        id: '123',
+        lengthInWeek: 1,
+      }
+    ])
+    expect(data[0].events).to.have.length(1)
+  })
+
   it('should add multiple projects to array', () => {
     const proj = {
       start: '2016-01-04',
@@ -67,6 +88,16 @@ describe('projects:prepareCalendarDays', () => {
     for(let i = 0; i < data.length; i++) {
       expect(data[i].events).to.eql([])
     }
+  })
+
+  it('should add project when start before start of calendar', () => {
+    const proj = {
+      start: '2016-01-03',
+      end: '2016-01-05',
+      title: 'Test Project'
+    }
+    const data = prepareCalendarDays([proj], '2016-01-04', 10)
+    data[0].events.should.have.length(1)
   })
 
   it('should add project for different weeks', () => {

@@ -30,8 +30,9 @@ export default function prepareCalendarDays(events, startDate, numDays) {
   return days
 }
 
+// add the event to all days to which it belongs (it will be added to at most 1 day per week)
 function addEventToDays(event, days, calendarStart) {
-  const start = moment(event.start), end = moment(event.end || event.start)
+  const start = moment(event.start).startOf('day'), end = moment(event.end || event.start).startOf('day')
   let current = moment(start), startInWeek = moment(start)
   while (current.isSameOrBefore(end)) {
     const i = current.diff(calendarStart, 'days')
@@ -47,8 +48,8 @@ function addEventToDays(event, days, calendarStart) {
       }
       // expanded flag
       item.expanded = !!(item.expanded &&
-        // only the first 4
-        days[i].events.filter(e => e.expanded).length < 4)
+      // only the first 4
+      days[i].events.filter(e => e.expanded).length < 4)
       days[i].events.push(item)
     }
     current = current.add(1, 'week').startOf('isoWeek')  // next week
