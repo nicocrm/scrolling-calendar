@@ -19,7 +19,7 @@ describe('Event', () => {
   it('invokes click handler bound with event', () => {
     const f = sinon.spy()
     const wrapper = mount(<Event event={sampleEvent} onEventClick={f} />)
-    wrapper.find('.multidayHolder').simulate('click')
+    wrapper.find('.event').simulate('click')
     f.should.have.been.calledWith({event: sampleEvent})
   })
 })

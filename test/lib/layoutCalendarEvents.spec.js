@@ -1,4 +1,5 @@
-import layoutCalendarEvents, {EXPANDED_HEIGHT} from '../../src/lib/layoutCalendarEvents.js'
+import layoutCalendarEvents from '../../src/lib/layoutCalendarEvents.js'
+import {EXPANDED_HEIGHT} from '../../src/constants'
 
 describe('projects:layoutCalendarEvents', () => {
   it('should default positions to 0', () => {
