@@ -8,6 +8,7 @@ function randomEvent(from, to) {
     id: String(faker.random.uuid()),
     start,
     end,
+    expanded: true,
     title: faker.random.arrayElement(['Meet', 'Inauguration', 'Ceremony', 'Ball', 'Party']) +
     ' @ ' + faker.address.city()
   }

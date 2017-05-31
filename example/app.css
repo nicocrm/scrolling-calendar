@@ -1,0 +1,2 @@
+/* Import the file built from CSS modules */
+@import "../build/main.css";

@@ -1,7 +1,5 @@
-export const EXPANDED_HEIGHT = 4 + 19 + 6 - 3
-export const CONTRACTED_HEIGHT = 4 + 9 - 3
-
 // calculate optimal position for all the events on the calendar
+import {CONTRACTED_HEIGHT, EXPANDED_HEIGHT} from '../constants'
 // days always must start on the first day of the week
 export default function layoutCalendarEvents(days) {
   for (let i = 0; i < days.length; i += 7) {

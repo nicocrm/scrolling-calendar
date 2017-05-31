@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import eventShape from '../proptypes/eventShape'
 import Event from './Event'
+import styles from './Day.pcss'
 
 const Day = ({isPast, isCurrentMonth, isToday, events, date, onEventClick, eventRenderer}) =>
   <li className={getDayClass({isPast, isCurrentMonth, isToday})}>
@@ -19,9 +20,9 @@ const renderDayEvents = (events, date, onEventClick, eventRenderer) =>
   </section>
 
 const getDayClass = ({isPast, isCurrentMonth, isToday}) => {
-  let cls = ''
+  let cls = styles.day + ' day'
   if (isPast)
-    cls += 'fade'
+    cls += ' past'
   if (isToday)
     cls += ' today'
   if (isCurrentMonth)

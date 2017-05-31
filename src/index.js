@@ -8,6 +8,7 @@ import moment from 'moment'
 import {initialWeek, renderRange, eventBuffer, calcWeeks, getCurrentMonth, calcUpdatedFlag} from './containerParts'
 import datePropType from './proptypes/datePropType'
 import eventShape from './proptypes/eventShape'
+import defaultSizeCalculator from './lib/defaultSizeCalculator'
 
 export default compose(
   setDisplayName('WeekCal'),
@@ -29,13 +30,15 @@ export default compose(
     onEventClick: PropTypes.func,
     // optional component creator used to render the inside of an event
     eventRenderer: PropTypes.func,
+    sizeCalculator: PropTypes.func
   }),
   defaultProps({
     min: moment().add(-5, 'year'),
     max: moment().add(10, 'year'),
     initialDate: moment().startOf('isoWeek'),
     visibleWeekCount: 4,
-    today: moment()
+    today: moment(),
+    sizeCalculator: defaultSizeCalculator
   }),
   initialWeek, renderRange, eventBuffer, calcWeeks, getCurrentMonth, calcUpdatedFlag
 )(Calendar)

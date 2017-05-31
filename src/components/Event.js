@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {withHandlers} from 'recompose'
 import {BASE_PADDING} from '../constants'
 import eventShape from '../proptypes/eventShape'
+import styles from './Event.pcss'
 
 const Event = ({event, eventRenderer, onEventClick}) =>
   // multidayholder
@@ -16,9 +17,11 @@ const Event = ({event, eventRenderer, onEventClick}) =>
   // const onMouseOut = (event.id === this.state.expanded) ? () => this.onEventMouseOut(event.id) : null
   // const onMouseOver = (event.id !== this.state.expanded) ? () => this.onEventMouseOver(event.id) : null
   <div className={getHolderClass(event)} key={event.id}
-       style={ {top: (event.position + BASE_PADDING) + 'px'}}
+       style={getHolderStyles(event)}
        onClick={onEventClick}>
-    {React.createElement(eventRenderer || DefaultEventRenderer, {event})}
+    <div className='event-inner'>
+      {React.createElement(eventRenderer || DefaultEventRenderer, {event})}
+    </div>
   </div>
 
 Event.propTypes = {
@@ -36,16 +39,23 @@ const DefaultEventRenderer = ({event}) =>
   <p className='event-title'>{event.title}</p>
 
 const getHolderClass = event => {
-  let cls = 'multidayHolder'
+  let cls = styles.event + ' event'
   if (event.expanded)
     cls += ' expanded'
   else
     cls += ' contracted'
   if (event.offset)
     cls += ' offset-' + event.offset
+  if (event.lengthInWeek)
+    cls += ' length-' + event.lengthInWeek
   if (event.className)
     cls += ' ' + event.className
   return cls
 }
+
+const getHolderStyles = event => ({
+  top: (event.position + BASE_PADDING) + 'px',
+  width: ((event.lengthInWeek - 1) * 100 + 96) + '%'
+})
 
 export default handlers(Event)

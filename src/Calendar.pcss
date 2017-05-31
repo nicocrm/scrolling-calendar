@@ -1,0 +1,18 @@
+/* This will be processed by CSS modules so all those class names will be modified at run time */
+.weekCal {
+  background-color: red;
+}
+
+.header {
+  :global(.month-name) {
+
+  }
+  :global(.week) {
+    display: flex;
+    span {
+      flex: 1;
+    }
+  }
+}
+
+

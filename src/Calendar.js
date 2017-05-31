@@ -6,6 +6,7 @@ import WeekRow from './components/WeekRow'
 import weekToDate from './lib/weekToDate'
 import Header from './components/Header'
 import moment from 'moment'
+import styles from './Calendar.pcss'
 
 class Calendar extends React.Component {
   // noinspection JSUnusedGlobalSymbols
@@ -34,7 +35,8 @@ class Calendar extends React.Component {
     eventRenderer: PropTypes.func,
     onEventClick: PropTypes.func,
     // a flag used to signify we need to re-render the list
-    updatedFlag: PropTypes.any
+    updatedFlag: PropTypes.any,
+    sizeCalculator: PropTypes.func.isRequired
   }
 
   initRef = (ref) => {
@@ -52,9 +54,7 @@ class Calendar extends React.Component {
 
   // what is the height of the week row?
   // this should be calculated according to the events
-  getWeekSize = (index) => {
-    return 194
-  }
+  getWeekSize = (index) => this.props.sizeCalculator(this.props.renderWeeks[index - this.props.renderRange.start])
 
   renderWeek = ({index, style}) =>
     <WeekRow key={index} today={this.props.today} currentMonth={this.props.currentMonth}
@@ -62,9 +62,15 @@ class Calendar extends React.Component {
              startOfWeek={weekToDate(this.props.min, index)}
              style={style}/>
 
+  componentWillReceiveProps(nextProps) {
+    if (this.listRef && nextProps.updatedFlag !== this.props.updatedFlag) {
+      this.listRef.recomputeSizes()
+    }
+  }
+
   render() {
     const estimatedSize = 194
-    return <div className='week-cal'>
+    return <div className={styles.weekCal}>
       <Header month={this.props.currentMonth}/>
       <VirtualList ref={this.initRef}
                    height={600}
