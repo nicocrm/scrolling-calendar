@@ -6,6 +6,7 @@ An event calendar with:
  * Week by week representation of events
  * Support for multi-day events
  * Support for collapsible events
+ * Variable row height
  
 ## Usage
 
@@ -15,7 +16,7 @@ npm install f1-week-cal
 import WeekCal from 'f1-week-cal'
 
 const myCalendar = () => 
-    <WeekCal events={myEvents} />
+    <WeekCal events={myEvents} onLoadEvents={loadAction} />
 ```
 
 ## Props
