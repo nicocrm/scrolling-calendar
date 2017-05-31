@@ -56,11 +56,17 @@ class Calendar extends React.Component {
   // this should be calculated according to the events
   getWeekSize = (index) => this.props.sizeCalculator(this.props.renderWeeks[index - this.props.renderRange.start])
 
-  renderWeek = ({index, style}) =>
-    <WeekRow key={index} today={this.props.today} currentMonth={this.props.currentMonth}
-             week={this.props.renderWeeks[index - this.props.renderRange.start]}
-             startOfWeek={weekToDate(this.props.min, index)}
-             style={style}/>
+  renderWeek = ({index, style}) => {
+    // console.log(`render for ${index}`);
+    const week = this.props.renderWeeks[index - this.props.renderRange.start]
+    if (!week)
+      // this can happen in the initial render?
+      return null
+    return <WeekRow key={index} today={this.props.today} currentMonth={this.props.currentMonth}
+                    week={week}
+                    startOfWeek={weekToDate(this.props.min, index)}
+                    style={style}/>
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.listRef && nextProps.updatedFlag !== this.props.updatedFlag) {
@@ -69,6 +75,7 @@ class Calendar extends React.Component {
   }
 
   render() {
+    // console.log(`rendering start = ${this.props.renderRange.start}`, this.props.renderWeeks);
     const estimatedSize = 194
     return <div className={styles.weekCal}>
       <Header month={this.props.currentMonth}/>
