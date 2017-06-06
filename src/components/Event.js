@@ -3,7 +3,29 @@ import PropTypes from 'prop-types'
 import {withHandlers} from 'recompose'
 import {BASE_PADDING} from '../constants'
 import eventShape from '../proptypes/eventShape'
-import styles from './Event.css'
+import styled from 'styled-components'
+
+const EventStyle = styled.div`
+  position: absolute;
+  display: block;
+  padding: 2px;
+  z-index: 1;
+  overflow: hidden;
+
+  height: ${props => props.expanded ? 23 : 2}px;
+  top: ${props => props.position + BASE_PADDING}px;
+  width: ${props => (props.lengthInWeek - 1) * 100 + 96}%;
+`
+
+const EventInner = styled.div`
+  border-radius: 2px;
+  background-color: green;
+  background-clip: border-box;
+`
+
+const EventTitle = styled.div`
+  margin: 0;
+`
 
 const Event = ({event, eventRenderer, onEventClick}) =>
   // multidayholder
@@ -16,13 +38,13 @@ const Event = ({event, eventRenderer, onEventClick}) =>
   // only register the handlers when they apply
   // const onMouseOut = (event.id === this.state.expanded) ? () => this.onEventMouseOut(event.id) : null
   // const onMouseOver = (event.id !== this.state.expanded) ? () => this.onEventMouseOver(event.id) : null
-  <div className={getHolderClass(event)} key={event.id}
-       style={getHolderStyles(event)}
+  <EventStyle className={getHolderClass(event)} key={event.id}
+       {...event}
        onClick={onEventClick}>
-    <div className='event-inner'>
+    <EventInner className='event-inner'>
       {React.createElement(eventRenderer || DefaultEventRenderer, {event})}
-    </div>
-  </div>
+    </EventInner>
+  </EventStyle>
 
 Event.propTypes = {
   event: eventShape.isRequired,
@@ -36,10 +58,10 @@ const handlers = withHandlers({
 })
 
 const DefaultEventRenderer = ({event}) =>
-  <p className='event-title'>{event.title}</p>
+  <EventTitle className='event-title'>{event.title}</EventTitle>
 
 const getHolderClass = event => {
-  let cls = styles.event + ' event'
+  let cls = 'event'
   if (event.expanded)
     cls += ' expanded'
   else
@@ -52,10 +74,5 @@ const getHolderClass = event => {
     cls += ' ' + event.className
   return cls
 }
-
-const getHolderStyles = event => ({
-  top: (event.position + BASE_PADDING) + 'px',
-  width: ((event.lengthInWeek - 1) * 100 + 96) + '%'
-})
 
 export default handlers(Event)

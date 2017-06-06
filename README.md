@@ -7,17 +7,20 @@ An event calendar with:
  * Support for multi-day events
  * Support for collapsible events
  * Variable row height
- 
+
 ## Usage
 
 ```
-npm install f1-week-cal
+npm install scrolling-calendar
 
-import WeekCal from 'f1-week-cal'
+import ScrollingCalendar from 'scrolling-calendar'
 
-const myCalendar = () => 
-    <WeekCal events={myEvents} onLoadEvents={loadAction} />
+const myCalendar = () =>
+    <ScrollingCalendar events={myEvents} onLoadEvents={loadAction} />
 ```
+
+**Important**: the calendar's container must have a set height, for example, it could 
+be a child in a flex layout, or just have a height of 100%.
 
 ## Props
 
@@ -42,10 +45,10 @@ Array of events, objects with the following properties:
  * title
  * start (a date, string or moment)
  * end (ditto)
- 
+
 ### onLoadEvents
 
-A function 
+A function
 
 ### visibleWeekCount
 

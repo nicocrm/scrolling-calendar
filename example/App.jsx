@@ -1,5 +1,5 @@
 import React from 'react'
-import WeekCal from '../src/index'
+import ScrollingCalendar from '../src/index'
 import sampleData from './sampleData'
 import {withState} from 'recompose'
 
@@ -13,9 +13,7 @@ const App = ({events, setEvents}) => {
       setEvents(sampleEvents.filter(e => e.start.isSameOrBefore(stop) && e.end.isSameOrAfter(start)))
     }, 600)
   }
-  return <div className="outer">
-    <WeekCal onLoadEvents={refreshEvents} events={events}/>
-  </div>
+  return <ScrollingCalendar onLoadEvents={refreshEvents} events={events}/>
 }
 
 export default withState('events', 'setEvents', [])(App)

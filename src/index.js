@@ -31,7 +31,7 @@ export default compose(
     // optional component creator used to render the inside of an event
     eventRenderer: PropTypes.func,
     sizeCalculator: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
   }),
   defaultProps({
     min: moment().add(-5, 'year'),
