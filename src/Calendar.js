@@ -81,7 +81,8 @@ class Calendar extends React.Component {
     const estimatedSize = 194
     return <div className={styles.weekCal + ' ' + this.props.className}>
       <Header month={this.props.currentMonth}/>
-      <VirtualList ref={this.initRef}
+      <div className='scroll-container'>
+        <VirtualList ref={this.initRef}
                    height={this.props.containerHeight}
                    width="100%"
                    data-updated={this.props.updatedFlag}
@@ -92,6 +93,7 @@ class Calendar extends React.Component {
                    estimatedItemSize={estimatedSize}
                    overscanCount={OVERSCAN}
                    onScroll={this.onScroll}/>
+      </div>
     </div>
   }
 }

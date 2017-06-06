@@ -1,6 +1,8 @@
 /* This will be processed by CSS modules so all those class names will be modified at run time */
 .weekCal {
   background-color: red;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
