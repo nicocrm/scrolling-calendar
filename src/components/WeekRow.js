@@ -13,7 +13,7 @@ const Ul = styled.ul`
 `
 
 const WeekRow = ({week, today, currentMonth, style}) =>
-  <Ul className={styles.weekRow + ' week-row'} style={style}>
+  <Ul className='week-row' style={style}>
     {week && week.map(day => <Day key={day.date} {...day}
                                   isToday={today.isSame(day.date, 'day')}
                                   isPast={today.isAfter(day.date, 'day')}

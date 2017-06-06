@@ -18,8 +18,6 @@ export default compose(
     max: datePropType,
     // where to start the calendar at
     initialDate: datePropType,
-    // height of the scrolling container
-    containerHeight: PropTypes.number.isRequired,
     visibleWeekCount: PropTypes.number,
     // function({start: string, end: string}) used to provide new events data
     onLoadEvents: PropTypes.func.isRequired,

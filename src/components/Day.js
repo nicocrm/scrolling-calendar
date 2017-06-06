@@ -5,25 +5,10 @@ import eventShape from '../proptypes/eventShape'
 import Event from './Event'
 import styled from 'styled-components'
 
-.day {
+const DayItem = styled.li`
   position: relative;
   flex: 1;
-  &:global(.past) {
-    opacity: 0.3;
-  }
-  &:global(.today) {
-
-  }
-  &:global(.current) {
-
-  }
-  :global(.dateWrapper) {
-  }
-}
-
-const Li = styled.li`
-  position: relative;
-  flex: 1;
+  ${props => props.isPast && 'opacity: 0.3'}
 `
 
 const DateWrapper = styled.section`
@@ -41,9 +26,9 @@ const DateText = styled.span`
 `
 
 const Day = ({isPast, isCurrentMonth, isToday, events, date, onEventClick, eventRenderer}) =>
-  <li className={getDayClass({isPast, isCurrentMonth, isToday})}>
+  <DayItem className={getDayClass({isPast, isCurrentMonth, isToday})}>
     {events.length ? renderDayEvents(events, date) : renderDateText(date)}
-  </li>
+  </DayItem>
 
 const renderDateText = (date) =>
   <DateText className='date'>{date.format('MMM D')}</DateText>
@@ -55,7 +40,7 @@ const renderDayEvents = (events, date, onEventClick, eventRenderer) =>
   </DateWrapper>
 
 const getDayClass = ({isPast, isCurrentMonth, isToday}) => {
-  let cls = styles.day + ' day'
+  let cls = 'day'
   if (isPast)
     cls += ' past'
   if (isToday)

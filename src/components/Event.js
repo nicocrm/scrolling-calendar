@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {withHandlers} from 'recompose'
 import {BASE_PADDING} from '../constants'
 import eventShape from '../proptypes/eventShape'
-import styles from './Event.css'
 
 const Event = ({event, eventRenderer, onEventClick}) =>
   // multidayholder
@@ -39,7 +38,7 @@ const DefaultEventRenderer = ({event}) =>
   <p className='event-title'>{event.title}</p>
 
 const getHolderClass = event => {
-  let cls = styles.event + ' event'
+  let cls = 'event'
   if (event.expanded)
     cls += ' expanded'
   else

@@ -8,10 +8,6 @@
 
   }
   :global(.week) {
-    display: flex;
-    span {
-      flex: 1;
-    }
   }
 }
 

@@ -1,12 +1,19 @@
 import React from 'react'
-import styles from '../Calendar.css'
+import styled from 'styled-components'
+
+const Week = styled.section`
+  display: flex;
+  span {
+    flex: 1;
+  }
+`
 
 const Header = ({month}) =>
-  <section className={styles.header}>
+  <section className='header'>
     <section className='month-name'>
       <h2>{month.format('MMMM YYYY')}</h2>
     </section>
-    <section className='week'>
+    <Week className='week'>
       <span>Sun</span>
       <span>Mon</span>
       <span>Tue</span>
@@ -14,7 +21,7 @@ const Header = ({month}) =>
       <span>Thu</span>
       <span>Fri</span>
       <span>Sat</span>
-    </section>
+    </Week>
   </section>
 
 export default Header
