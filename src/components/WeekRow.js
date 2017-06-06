@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import dayShape from '../proptypes/dayShape'
 import Day from './Day'
-import styles from './WeekRow.pcss'
+import styles from './WeekRow.css'
 
 const WeekRow = ({week, today, currentMonth, style}) =>
   <ul className={styles.weekRow + ' week-row'} style={style}>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {withHandlers} from 'recompose'
 import {BASE_PADDING} from '../constants'
 import eventShape from '../proptypes/eventShape'
-import styles from './Event.pcss'
+import styles from './Event.css'
 
 const Event = ({event, eventRenderer, onEventClick}) =>
   // multidayholder

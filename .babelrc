@@ -1,10 +1,13 @@
 {
   "presets": [
-    "es2015",
-    "react",
-    "stage-1"
+     ["es2015"],
+     "react",
+     "stage-1"
   ],
   "plugins": [
-    "transform-postcss"
-  ]
+    ["css-modules-transform", {
+        "prepend": ["postcss-nested"],
+        "extractCss": "./dist/combined.css"
+    }]
+  ],
 }

@@ -30,7 +30,8 @@ export default compose(
     onEventClick: PropTypes.func,
     // optional component creator used to render the inside of an event
     eventRenderer: PropTypes.func,
-    sizeCalculator: PropTypes.func
+    sizeCalculator: PropTypes.func,
+    className: PropTypes.string
   }),
   defaultProps({
     min: moment().add(-5, 'year'),
@@ -38,7 +39,8 @@ export default compose(
     initialDate: moment().startOf('isoWeek'),
     visibleWeekCount: 4,
     today: moment(),
-    sizeCalculator: defaultSizeCalculator
+    sizeCalculator: defaultSizeCalculator,
+    className: 'scrolling-calendar'
   }),
   initialWeek, renderRange, eventBuffer, calcWeeks, getCurrentMonth, calcUpdatedFlag
 )(Calendar)

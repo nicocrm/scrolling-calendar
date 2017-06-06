@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import eventShape from '../proptypes/eventShape'
 import Event from './Event'
-import styles from './Day.pcss'
+import styles from './Day.css'
 
 const Day = ({isPast, isCurrentMonth, isToday, events, date, onEventClick, eventRenderer}) =>
   <li className={getDayClass({isPast, isCurrentMonth, isToday})}>

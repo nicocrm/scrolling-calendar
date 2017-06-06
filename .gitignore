@@ -33,4 +33,4 @@ build/Release
 node_modules
 
 # built files (they are used for npm publish but not published to git)
-build/
+dist/

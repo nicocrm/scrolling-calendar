@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../Calendar.pcss'
+import styles from '../Calendar.css'
 
 const Header = ({month}) =>
   <section className={styles.header}>

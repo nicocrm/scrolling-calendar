@@ -6,7 +6,7 @@ import WeekRow from './components/WeekRow'
 import weekToDate from './lib/weekToDate'
 import Header from './components/Header'
 import moment from 'moment'
-import styles from './Calendar.pcss'
+import styles from './Calendar.css'
 
 class Calendar extends React.Component {
   // noinspection JSUnusedGlobalSymbols
@@ -29,6 +29,7 @@ class Calendar extends React.Component {
     totalWeekCount: PropTypes.number.isRequired,
     // the week to initially scroll to
     initialWeekIndex: PropTypes.number.isRequired,
+    containerHeight: PropTypes.number.isRequired,
     min: PropTypes.object.isRequired,
     today: PropTypes.instanceOf(moment).isRequired,
     currentMonth: PropTypes.instanceOf(moment).isRequired,
@@ -36,7 +37,8 @@ class Calendar extends React.Component {
     onEventClick: PropTypes.func,
     // a flag used to signify we need to re-render the list
     updatedFlag: PropTypes.any,
-    sizeCalculator: PropTypes.func.isRequired
+    sizeCalculator: PropTypes.func.isRequired,
+    className: PropTypes.string.isRequired
   }
 
   initRef = (ref) => {
@@ -46,7 +48,7 @@ class Calendar extends React.Component {
   onScroll = (offset) => {
     const {start, stop} = this.listRef.sizeAndPositionManager.getVisibleRange({
       offset,
-      containerSize: 600,
+      containerSize: this.props.containerHeight,
       overscanCount: OVERSCAN
     })
     this.props.setRenderRange({start, stop})
@@ -77,10 +79,10 @@ class Calendar extends React.Component {
   render() {
     // console.log(`rendering start = ${this.props.renderRange.start}`, this.props.renderWeeks);
     const estimatedSize = 194
-    return <div className={styles.weekCal}>
+    return <div className={styles.weekCal + ' ' + this.props.className}>
       <Header month={this.props.currentMonth}/>
       <VirtualList ref={this.initRef}
-                   height={600}
+                   height={this.props.containerHeight}
                    width="100%"
                    data-updated={this.props.updatedFlag}
                    renderItem={this.renderWeek}
