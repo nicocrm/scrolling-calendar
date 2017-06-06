@@ -22,7 +22,7 @@
   "scripts": {
     "lint": "node_modules/.bin/eslint --ext .js .",
     "clean": "rm -rf dist",
-    "build:cjs": "babel src --out-dir dist && echo 'require(\"./combined.css\")' >> ./dist/index.js",
+    "build:cjs": "babel src --out-dir dist",
     "build": "npm run clean && npm run build:cjs",
     "prepublish": "npm run build",
     "test": "mocha --require babel-register --require ignore-styles test/**/*.spec.js -r ./test/setup.js --recursive",
@@ -36,7 +36,8 @@
   "dependencies": {
     "moment": "^2.18.1",
     "react-tiny-virtual-list": "^2.0.5",
-    "recompose": "^0.23.4"
+    "recompose": "^0.23.4",
+    "styled-components": "^2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.4.5",

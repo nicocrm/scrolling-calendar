@@ -6,7 +6,17 @@ import WeekRow from './components/WeekRow'
 import weekToDate from './lib/weekToDate'
 import Header from './components/Header'
 import moment from 'moment'
-import styles from './Calendar.css'
+import styled from 'styled-components'
+
+const FlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const FlexItem = styled.div`
+  flex: 1;
+
+`
 
 class Calendar extends React.Component {
   // noinspection JSUnusedGlobalSymbols
@@ -79,20 +89,24 @@ class Calendar extends React.Component {
   render() {
     // console.log(`rendering start = ${this.props.renderRange.start}`, this.props.renderWeeks);
     const estimatedSize = 194
-    return <div className={styles.weekCal + ' ' + this.props.className}>
-      <Header month={this.props.currentMonth}/>
-      <VirtualList ref={this.initRef}
-                   height={this.props.containerHeight}
-                   width="100%"
-                   data-updated={this.props.updatedFlag}
-                   renderItem={this.renderWeek}
-                   itemCount={this.props.totalWeekCount}
-                   scrollOffset={this.props.initialWeekIndex * estimatedSize}
-                   itemSize={this.getWeekSize}
-                   estimatedItemSize={estimatedSize}
-                   overscanCount={OVERSCAN}
-                   onScroll={this.onScroll}/>
-    </div>
+    return <FlexColumn className={this.props.className}>
+      <FlexItem>
+        <Header month={this.props.currentMonth}/>
+      </FlexItem>
+      <FlexItem>
+        <VirtualList ref={this.initRef}
+                     height={this.props.containerHeight}
+                     width="100%"
+                     data-updated={this.props.updatedFlag}
+                     renderItem={this.renderWeek}
+                     itemCount={this.props.totalWeekCount}
+                     scrollOffset={this.props.initialWeekIndex * estimatedSize}
+                     itemSize={this.getWeekSize}
+                     estimatedItemSize={estimatedSize}
+                     overscanCount={OVERSCAN}
+                     onScroll={this.onScroll}/>
+      </FlexItem>
+    </FlexColumn>
   }
 }
 

@@ -18,6 +18,8 @@ export default compose(
     max: datePropType,
     // where to start the calendar at
     initialDate: datePropType,
+    // height of the scrolling container
+    containerHeight: PropTypes.number.isRequired,
     visibleWeekCount: PropTypes.number,
     // function({start: string, end: string}) used to provide new events data
     onLoadEvents: PropTypes.func.isRequired,
@@ -31,7 +33,7 @@ export default compose(
     // optional component creator used to render the inside of an event
     eventRenderer: PropTypes.func,
     sizeCalculator: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
   }),
   defaultProps({
     min: moment().add(-5, 'year'),
