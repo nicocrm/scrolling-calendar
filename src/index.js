@@ -11,7 +11,7 @@ import eventShape from './proptypes/eventShape'
 import defaultSizeCalculator from './lib/defaultSizeCalculator'
 
 export default compose(
-  setDisplayName('WeekCal'),
+  setDisplayName('ScrollingCalendar'),
   setPropTypes({
     // min/max define the scroll range
     min: datePropType,
