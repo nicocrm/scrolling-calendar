@@ -3,41 +3,39 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import eventShape from '../proptypes/eventShape'
 import Event from './Event'
-import styled from 'styled-components'
 
-const DayItem = styled.li`
-  position: relative;
-  flex: 1;
-  ${props => props.isPast && 'opacity: 0.3'}
-`
+const dayStyle = props => Object.assign({
+  position: 'relative',
+  flex: '1'
+}, props.isPast && {opacity: '0.3'})
 
-const DateWrapper = styled.section`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: visible;
-`
+const dateWrapperStyle = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  overflow: 'visible',
+}
 
-const DateText = styled.span`
-  display: block;
-  padding: 4px;
-`
+const dateTextStyle = {
+  display: 'block',
+  padding: '4px'
+}
 
 const Day = ({isPast, isCurrentMonth, isToday, events, date, onEventClick, eventRenderer}) =>
-  <DayItem className={getDayClass({isPast, isCurrentMonth, isToday})}>
+  <li style={dayStyle({isPast})} className={getDayClass({isPast, isCurrentMonth, isToday})}>
     {events.length ? renderDayEvents(events, date) : renderDateText(date)}
-  </DayItem>
+  </li>
 
 const renderDateText = (date) =>
-  <DateText className='date'>{date.format('MMM D')}</DateText>
+  <span style={dateTextStyle} className='date'>{date.format('MMM D')}</span>
 
 const renderDayEvents = (events, date, onEventClick, eventRenderer) =>
-  <DateWrapper>
+  <div style={dateWrapperStyle}>
     {renderDateText(date)}
     {events.map(ev => <Event key={ev.id} event={ev} onEventClick={onEventClick} eventRenderer={eventRenderer} />)}
-  </DateWrapper>
+  </div>
 
 const getDayClass = ({isPast, isCurrentMonth, isToday}) => {
   let cls = 'day'

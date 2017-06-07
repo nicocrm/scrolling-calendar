@@ -3,20 +3,18 @@ import PropTypes from 'prop-types'
 import Header from './components/Header'
 import EventList from './components/EventList'
 import moment from 'moment'
-import styled from 'styled-components'
 
-const FlexColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`
-
-const HeaderStyle = styled.div`
-  flex: 0;
-`
-const ContainerStyle = styled.div`
-  flex: 1;
-`
+const columnStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%'
+}
+const headerStyle = {
+  flex: '0'
+}
+const containerStyle = {
+  flex: '1'
+}
 
 class Calendar extends React.Component {
   // noinspection JSUnusedGlobalSymbols
@@ -64,14 +62,15 @@ class Calendar extends React.Component {
   }
 
   render() {
-    return <FlexColumn className={this.props.className}>
-      <HeaderStyle>
+    return <div style={columnStyle}>
+      <div style={headerStyle}>
         <Header month={this.props.currentMonth}/>
-      </HeaderStyle>
-      <ContainerStyle innerRef={this.initContainerRef}>
-        {this.state.calculatedHeight && <EventList {...this.props} containerHeight={this.state.calculatedHeight} />}
-      </ContainerStyle>
-    </FlexColumn>
+      </div>
+      <div style={containerStyle} ref={this.initContainerRef}>
+        {this.state.calculatedHeight &&
+          <EventList {...this.props} containerHeight={this.state.calculatedHeight} />}
+      </div>
+    </div>
   }
 }
 

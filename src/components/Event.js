@@ -3,29 +3,25 @@ import PropTypes from 'prop-types'
 import {withHandlers} from 'recompose'
 import {BASE_PADDING} from '../constants'
 import eventShape from '../proptypes/eventShape'
-import styled from 'styled-components'
 
-const EventStyle = styled.div`
-  position: absolute;
-  display: block;
-  padding: 2px;
-  z-index: 1;
-  overflow: hidden;
-
-  height: ${props => props.expanded ? 23 : 2}px;
-  top: ${props => props.position + BASE_PADDING}px;
-  width: ${props => (props.lengthInWeek - 1) * 100 + 96}%;
-`
-
-const EventInner = styled.div`
-  border-radius: 2px;
-  background-color: green;
-  background-clip: border-box;
-`
-
-const EventTitle = styled.div`
-  margin: 0;
-`
+const eventStyle = event => ({
+  position: 'absolute',
+  display: 'block',
+  padding: '2px',
+  zIndex: 1,
+  overflow: 'hidden',
+  height: `${event.expanded ? 23 : 2}px`,
+  top: `${event.position + BASE_PADDING}px`,
+  width: `${(event.lengthInWeek - 1) * 100 + 96}%`,
+})
+const eventInnerStyle = {
+  borderRadius: '2px',
+  backgroundColor: 'green',
+  backgroundClip: 'border-box'
+}
+const eventTitleStyle = {
+  margin: '0'
+}
 
 const Event = ({event, eventRenderer, onEventClick}) =>
   // multidayholder
@@ -38,13 +34,13 @@ const Event = ({event, eventRenderer, onEventClick}) =>
   // only register the handlers when they apply
   // const onMouseOut = (event.id === this.state.expanded) ? () => this.onEventMouseOut(event.id) : null
   // const onMouseOver = (event.id !== this.state.expanded) ? () => this.onEventMouseOver(event.id) : null
-  <EventStyle className={getHolderClass(event)} key={event.id}
-       {...event}
+  <div className={getHolderClass(event)} key={event.id}
+      style={eventStyle(event)}
        onClick={onEventClick}>
-    <EventInner className='event-inner'>
+    <div style={eventInnerStyle} className='event-inner'>
       {React.createElement(eventRenderer || DefaultEventRenderer, {event})}
-    </EventInner>
-  </EventStyle>
+    </div>
+  </div>
 
 Event.propTypes = {
   event: eventShape.isRequired,
@@ -58,7 +54,7 @@ const handlers = withHandlers({
 })
 
 const DefaultEventRenderer = ({event}) =>
-  <EventTitle className='event-title'>{event.title}</EventTitle>
+  <p style={eventTitleStyle} className='event-title'>{event.title}</p>
 
 const getHolderClass = event => {
   let cls = 'event'

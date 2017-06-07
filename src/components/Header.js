@@ -1,27 +1,28 @@
 import React from 'react'
-import styled from 'styled-components'
 
-const Week = styled.section`
-  display: flex;
-  span {
-    flex: 1;
-  }
-`
+const weekStyle = {
+  display: 'flex'
+}
+const dayStyle = {
+  flex: 1
+}
+
+const Day = (label) => <span style={dayStyle}>{label}</span>
 
 const Header = ({month}) =>
   <section className='header'>
     <section className='month-name'>
       <h2>{month.format('MMMM YYYY')}</h2>
     </section>
-    <Week className='week'>
-      <span>Sun</span>
-      <span>Mon</span>
-      <span>Tue</span>
-      <span>Wed</span>
-      <span>Thu</span>
-      <span>Fri</span>
-      <span>Sat</span>
-    </Week>
+    <section style={weekStyle} className='week'>
+  {Day('Sun')}
+  {Day('Mon')}
+  {Day('Tue')}
+  {Day('Wed')}
+  {Day('Thu')}
+  {Day('Fri')}
+  {Day('Sat')}
+    </section>
   </section>
 
 export default Header
