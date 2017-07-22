@@ -7,47 +7,47 @@ describe('containerParts', () => {
   // tests for the individual parts of the container
   const Dummy = () => <div className='dummy'/>
 
-  describe('calcWeeks', () => {
-    it('should pass empty weeks if no events provided', () => {
-      const Element = calcWeeks(props => <Dummy {...props} />)
-      const events = []
-      const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
+    describe('calcWeeks', () => {
+      it('should pass empty weeks if no events provided', () => {
+        const Element = calcWeeks(props => <Dummy {...props} />)
+        const events = []
+        const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
 
-      wrapper.find(Dummy).should.have.prop('renderWeeks').that.is.an('array').and.has.length(6)
-      const weeks = wrapper.find(Dummy).prop('renderWeeks')
-      for (let w of weeks) {
-        for (let d of w) {
-          d.events.should.eql([])
+        wrapper.find(Dummy).should.have.prop('renderWeeks').that.is.an('array').and.has.length(6)
+        const weeks = wrapper.find(Dummy).prop('renderWeeks')
+        for (let w of weeks) {
+          for (let d of w) {
+            d.events.should.eql([])
+          }
         }
-      }
-    })
+      })
 
-    it('should not include events out of range', () => {
-      const Element = calcWeeks(props => <Dummy {...props} />)
-      const events = [{start: '2016-01-05', end: '2016-01-20', id: '123', title: 'Some Event'}]
-      const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
-      const weeks = wrapper.find(Dummy).prop('renderWeeks')
-      for (let w of weeks) {
-        for (let d of w) {
-          d.events.should.eql([])
+      it('should not include events out of range', () => {
+        const Element = calcWeeks(props => <Dummy {...props} />)
+        const events = [{start: '2016-01-05', end: '2016-01-20', id: '123', title: 'Some Event'}]
+        const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2016-01-01'/>)
+        const weeks = wrapper.find(Dummy).prop('renderWeeks')
+        for (let w of weeks) {
+          for (let d of w) {
+            d.events.should.eql([])
+          }
         }
-      }
-    })
+      })
 
-    it('should pass events grouped by week', () => {
-      const Element = calcWeeks(props => <Dummy {...props} />)
-      const events = [{start: '2016-02-20', end: '2016-04-20', id: '123', title: 'Some Event'}]
-      const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2015-12-28'/>)
+      it('should pass events grouped by week', () => {
+        const Element = calcWeeks(props => <Dummy {...props} />)
+        const events = [{start: '2016-02-20', end: '2016-04-20', id: '123', title: 'Some Event'}]
+        const wrapper = mount(<Element events={events} renderRange={{start: 5, stop: 10}} min='2015-12-28'/>)
 
-      const weeks = wrapper.find(Dummy).prop('renderWeeks')
-      // not before
-      weeks[2][4].events.should.have.length(0)
-      // included on the day we start (7th week, on Saturday)
-      weeks[2][5].events.should.have.length(1)
-      // and repeat on following weeks
-      weeks[3][0].events.should.have.length(1)
+        const weeks = wrapper.find(Dummy).prop('renderWeeks')
+        // not before
+        weeks[2][4].events.should.have.length(0)
+        // included on the day we start (7th week, on Saturday)
+        weeks[2][5].events.should.have.length(1)
+        // and repeat on following weeks
+        weeks[3][0].events.should.have.length(1)
+      })
     })
-  })
 
   describe('renderRange', () => {
     it('should pass renderRange based on initial date', () => {
@@ -122,6 +122,21 @@ describe('containerParts', () => {
       onLoadEventsProp.should.have.been.calledWith({start: '2016-02-08', stop: '2016-05-22'})
     })
 
+    it('should call onVisibleRangeChanged when range is modified', () => {
+      const Element = eventBuffer(props => <Dummy {...props} />)
+      const onVisibleRangeChanged = sinon.spy()
+      const wrapper = mount(<Element
+        onLoadEvents={() => null}
+        onVisibleRangeChanged={onVisibleRangeChanged}
+        min='2016-01-01'
+        setRenderRange={() => null}
+        renderRange={{start: 40, stop: 46}}/>)
+      onVisibleRangeChanged.should.have.been.calledWith({start: '2016-10-03', stop: '2016-11-20'})
+      const setRenderRange = wrapper.find(Dummy).prop('setRenderRange')
+      setRenderRange({start: 10, stop: 16})
+      onVisibleRangeChanged.should.have.been.calledWith({start: '2016-03-07', stop: '2016-04-24'})
+    })
+
     it('should update renderRange without calling onLoadEvents if range is modified a little', () => {
       const Element = eventBuffer(props => <Dummy {...props} />)
       const setRenderRangeProp = sinon.spy()
@@ -149,8 +164,6 @@ describe('containerParts', () => {
         setRenderRange={setRenderRangeProp} renderRange={{start: 40, stop: 46}}/>)
       // noinspection BadExpressionStatementJS
       onLoadEventsProp.should.have.been.called
-      // noinspection BadExpressionStatementJS
-      setRenderRangeProp.should.not.have.been.called
     })
   })
 

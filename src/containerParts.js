@@ -28,12 +28,17 @@ export const renderRange = withState('renderRange', 'setRenderRange', ({initialW
 // maintain state of currently requested events and adjust window when the render range is updated
 export const eventBuffer = compose(
   withState('bufferRange', 'setBufferRange', ({renderRange}) => ({
-    start: renderRange.start - BUFFER,
-    stop: renderRange.stop + BUFFER
+    start: 0,
+    stop: 0
   })),
   withHandlers({
     setRenderRange: (props) => (range) => {
       props.setRenderRange(range)
+      if(props.onVisibleRangeChanged)
+        props.onVisibleRangeChanged({
+          start: weekToDate(props.min, range.start).format('YYYY-MM-DD'),
+          stop: weekToDate(props.min, range.stop, true).format('YYYY-MM-DD')
+        })
       if (props.bufferRange.start > range.start || props.bufferRange.stop < range.stop) {
         const bufferRange = {start: range.start - BUFFER, stop: range.stop + BUFFER}
         props.setBufferRange(bufferRange)
@@ -46,10 +51,11 @@ export const eventBuffer = compose(
   }),
   lifecycle({
     componentDidMount() {
-      this.props.onLoadEvents({
-        start: weekToDate(this.props.min, this.props.bufferRange.start).format('YYYY-MM-DD'),
-        stop: weekToDate(this.props.min, this.props.bufferRange.stop, true).format('YYYY-MM-DD')
-      })
+      this.props.setRenderRange(this.props.renderRange)
+      // this.props.onLoadEvents({
+      //   start: weekToDate(this.props.min, this.props.bufferRange.start).format('YYYY-MM-DD'),
+      //   stop: weekToDate(this.props.min, this.props.bufferRange.stop, true).format('YYYY-MM-DD')
+      // })
     }
   })
 )

@@ -19,7 +19,7 @@ const myCalendar = () =>
     <ScrollingCalendar events={myEvents} onLoadEvents={loadAction} />
 ```
 
-**Important**: the calendar's container must have a set height, for example, it could 
+**Important**: the calendar's container must have a set height, for example, it could
 be a child in a flex layout, or just have a height of 100%.
 
 ## Props
@@ -46,9 +46,15 @@ Array of events, objects with the following properties:
  * start (a date, string or moment)
  * end (ditto)
 
-### onLoadEvents
+### onLoadEvents({start, stop})
 
-A function
+A function that will be called when the window of loaded events change.  This should trigger the loading of events, which will be provided via the events prop.  The function itself can return immeditately - we'll wait for the new events to arrive to signify that the loading has completed.
+`start` and `stop` are strings in the YYYY-MM-DD format.
+
+### onVisibleRangeChanged
+
+A callback for when the user has scrolled the view.  This can be used to display additional details about the currently displayed events.
+`start` and `stop` are strings in the YYYY-MM-DD format.
 
 ### visibleWeekCount
 

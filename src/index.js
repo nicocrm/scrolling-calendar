@@ -21,6 +21,8 @@ export default compose(
     visibleWeekCount: PropTypes.number,
     // function({start: string, end: string}) used to provide new events data
     onLoadEvents: PropTypes.func.isRequired,
+    // function({start: string, end: string}) used to indicate to our container that the visible range of events has changed
+    onVisibleRangeChanged: PropTypes.func,
     events: PropTypes.arrayOf(
       eventShape
     ).isRequired,
