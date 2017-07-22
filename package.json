@@ -1,9 +1,6 @@
 {
   "author": "Nicolas Galler <nic@f1code.com>",
   "description": "An event calendar React component with infinite scrolling and dynamic data loading",
-  "engines": {
-    "node": "4.2.3"
-  },
   "homepage": "http://f1code.com",
   "keywords": [
     "react",
