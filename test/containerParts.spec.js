@@ -137,6 +137,21 @@ describe('containerParts', () => {
       onVisibleRangeChanged.should.have.been.calledWith({start: '2016-03-07', stop: '2016-04-24'})
     })
 
+    it('should not call onVisibleRangeChanged when range is not modified', () => {
+      const Element = eventBuffer(props => <Dummy {...props} />)
+      const onVisibleRangeChanged = sinon.spy()
+      const wrapper = mount(<Element
+        onLoadEvents={() => null}
+        onVisibleRangeChanged={onVisibleRangeChanged}
+        min='2016-01-01'
+        setRenderRange={() => null}
+        renderRange={{start: 40, stop: 46}}/>)
+      onVisibleRangeChanged.reset()
+      const setRenderRange = wrapper.find(Dummy).prop('setRenderRange')
+      setRenderRange({start: 40, stop: 46})
+      onVisibleRangeChanged.should.not.have.been.called
+    })
+
     it('should update renderRange without calling onLoadEvents if range is modified a little', () => {
       const Element = eventBuffer(props => <Dummy {...props} />)
       const setRenderRangeProp = sinon.spy()

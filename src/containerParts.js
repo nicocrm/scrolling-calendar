@@ -28,17 +28,19 @@ export const renderRange = withState('renderRange', 'setRenderRange', ({initialW
 // maintain state of currently requested events and adjust window when the render range is updated
 export const eventBuffer = compose(
   withState('bufferRange', 'setBufferRange', ({renderRange}) => ({
-    start: 0,
-    stop: 0
+    start: renderRange.start - BUFFER,
+    stop: renderRange.stop + BUFFER
   })),
   withHandlers({
     setRenderRange: (props) => (range) => {
-      props.setRenderRange(range)
-      if(props.onVisibleRangeChanged)
-        props.onVisibleRangeChanged({
-          start: weekToDate(props.min, range.start).format('YYYY-MM-DD'),
-          stop: weekToDate(props.min, range.stop, true).format('YYYY-MM-DD')
-        })
+      if(range.start !== props.renderRange.start || range.stop !== props.renderRange.stop) {
+        props.setRenderRange(range)
+        if(props.onVisibleRangeChanged)
+          props.onVisibleRangeChanged({
+            start: weekToDate(props.min, range.start).format('YYYY-MM-DD'),
+            stop: weekToDate(props.min, range.stop, true).format('YYYY-MM-DD')
+          })
+      }
       if (props.bufferRange.start > range.start || props.bufferRange.stop < range.stop) {
         const bufferRange = {start: range.start - BUFFER, stop: range.stop + BUFFER}
         props.setBufferRange(bufferRange)
@@ -51,11 +53,15 @@ export const eventBuffer = compose(
   }),
   lifecycle({
     componentDidMount() {
-      this.props.setRenderRange(this.props.renderRange)
-      // this.props.onLoadEvents({
-      //   start: weekToDate(this.props.min, this.props.bufferRange.start).format('YYYY-MM-DD'),
-      //   stop: weekToDate(this.props.min, this.props.bufferRange.stop, true).format('YYYY-MM-DD')
-      // })
+      this.props.onLoadEvents({
+        start: weekToDate(this.props.min, this.props.bufferRange.start).format('YYYY-MM-DD'),
+        stop: weekToDate(this.props.min, this.props.bufferRange.stop, true).format('YYYY-MM-DD')
+      })
+      if(this.props.onVisibleRangeChanged)
+        this.props.onVisibleRangeChanged({
+          start: weekToDate(this.props.min, this.props.renderRange.start).format('YYYY-MM-DD'),
+          stop: weekToDate(this.props.min, this.props.renderRange.stop, true).format('YYYY-MM-DD')
+        })
     }
   })
 )

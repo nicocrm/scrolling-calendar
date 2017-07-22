@@ -13,7 +13,12 @@ const App = ({events, setEvents}) => {
       setEvents(sampleEvents.filter(e => e.start.isSameOrBefore(stop) && e.end.isSameOrAfter(start)))
     }, 600)
   }
-  return <ScrollingCalendar onLoadEvents={refreshEvents} events={events}/>
+  const onVisibleRangeChanged = ({start, stop}) => {
+    console.log(`VISIBLE RANGE CHANGED ${start} - ${stop}`)
+  }
+  return <ScrollingCalendar onLoadEvents={refreshEvents}
+    onVisibleRangeChanged={onVisibleRangeChanged}
+    events={events}/>
 }
 
 export default withState('events', 'setEvents', [])(App)

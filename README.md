@@ -58,7 +58,7 @@ A callback for when the user has scrolled the view.  This can be used to display
 
 ### visibleWeekCount
 
-
+Number of weeks to show on calendar.  The size of the week rows will be calculated accordingly.
 
 ## Limitations
 
