@@ -12,7 +12,7 @@ const weekRowStyle = {
 }
 
 const WeekRow = ({week, today, currentMonth, style}) =>
-  <ul style={weekRowStyle} className='week-row' style={style}>
+  <ul className='week-row' style={{...weekRowStyle, ...style}}>
     {week && week.map(day => <Day key={day.date} {...day}
                                   isToday={today.isSame(day.date, 'day')}
                                   isPast={today.isAfter(day.date, 'day')}
