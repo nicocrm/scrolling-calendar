@@ -62,7 +62,7 @@ class Calendar extends React.Component {
   }
 
   render() {
-    return <div style={columnStyle}>
+    return <div style={columnStyle} className={this.props.className}>
       <div style={headerStyle}>
         <Header month={this.props.currentMonth}/>
       </div>
