@@ -25,7 +25,7 @@
     "test": "mocha --require babel-register --require ignore-styles test -r ./test/setup.js --recursive",
     "start": "budo example/index.js --css example/app.css --live -- -t [ babelify ]"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "peerDependencies": {
     "react": "^15.3.2",
     "prop-types": "^15.5.8"
