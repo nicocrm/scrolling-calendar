@@ -3,11 +3,5 @@
      ["es2015"],
      "react",
      "stage-1"
-  ],
-  "plugins": [
-    ["css-modules-transform", {
-        "prepend": ["postcss-nested"],
-        "extractCss": "./dist/combined.css"
-    }]
-  ],
+  ]
 }
